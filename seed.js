@@ -3,8 +3,8 @@ const { client } = require("./common");
 const seed = async () => {
   try {
     await client.connect();
-    const SQL = `DROP TABLE IF EXISTS categories;
-    DROP TABLE IF EXISTS notes;
+    const SQL = `DROP TABLE IF EXISTS categories CASCADE;
+    DROP TABLE IF EXISTS notes CASCADE;
     CREATE TABLE categories(
         id SERIAL PRIMARY KEY,
         name VARCHAR(100)

@@ -35,12 +35,11 @@ app.get("/api/notes", async (req, res, next) => {
 
 app.post("/api/notes", async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { txt, ranking } = req.body;
+    const { txt, ranking, category_id } = req.body;
     const SQL = `
-          INSERT INTO notes(txt, ranking, id) VALUES($1, $2, $3) RETURNING *;
+          INSERT INTO notes(txt, ranking, category_id) VALUES($1, $2, $3) RETURNING *;
           `;
-    const response = await client.query(SQL, [txt, ranking]);
+    const response = await client.query(SQL, [txt, ranking, category_id]);
     res.status(200).json(response.rows);
   } catch (error) {
     console.error(error);
@@ -70,8 +69,8 @@ app.delete("/api/notes/:id", async (req, res, next) => {
     const SQL = `
           DELETE FROM notes WHERE id = $1
           `;
-    const response = await client.query(SQL, [id]);
-    res.status(200).json(response.rows);
+    await client.query(SQL, [id]);
+    res.sendStatus(204);
   } catch (error) {
     console.error(error);
   }
